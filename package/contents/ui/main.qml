@@ -229,122 +229,126 @@ PlasmoidItem {
     }
 
     // ── Full Representation (popup details) ───────────────────────────
-    fullRepresentation: ColumnLayout {
-        id: fullView
-        anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
-        spacing: Kirigami.Units.smallSpacing
+    // Wrapped in Item because the shell forces anchors.fill on the
+    // fullRepresentation root. We set implicitWidth (a core QQuickItem
+    // property) so the shell can reliably read the desired popup size.
+    // Layout.preferredWidth is kept as belt-and-suspenders.
+    fullRepresentation: Item {
+        implicitWidth: Kirigami.Units.gridUnit * 12
+        implicitHeight: fullView.implicitHeight + Kirigami.Units.largeSpacing * 2
+        Layout.preferredWidth: implicitWidth
+        Layout.preferredHeight: implicitHeight
+        Layout.minimumWidth: implicitWidth
+        Layout.maximumWidth: implicitWidth
 
-        // Title
-        PlasmaComponents3.Label {
-            Layout.fillWidth: true
-            text: "OpenRouter Credits"
-            font.bold: true
-            font.pixelSize: Math.round(Kirigami.Units.fontPixelSize + 2)
-            elide: Text.ElideRight
-        }
+        ColumnLayout {
+            id: fullView
+            anchors.fill: parent
+            anchors.margins: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.smallSpacing
 
-        // Divider
-        Kirigami.Separator {
-            Layout.fillWidth: true
-        }
-
-        // Total Credits
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: Kirigami.Units.largeSpacing
-
-            PlasmaComponents3.Label {
-                text: "Total Credits:"
-                opacity: 0.7
-            }
-
+            // Title
             PlasmaComponents3.Label {
                 Layout.fillWidth: true
-                horizontalAlignment: Text.AlignRight
-                text: root.formatCredits(root.totalCredits)
-            }
-        }
-
-        // Total Usage
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: Kirigami.Units.largeSpacing
-
-            PlasmaComponents3.Label {
-                text: "Total Usage:"
-                opacity: 0.7
-            }
-
-            PlasmaComponents3.Label {
-                Layout.fillWidth: true
-                horizontalAlignment: Text.AlignRight
-                text: root.formatCredits(root.totalUsage)
-            }
-        }
-
-        // Divider
-        Kirigami.Separator {
-            Layout.fillWidth: true
-        }
-
-        // Remaining Balance (prominent)
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: Kirigami.Units.largeSpacing
-
-            PlasmaComponents3.Label {
-                text: "Remaining:"
+                text: "Credits"
                 font.bold: true
+                font.pixelSize: Math.round(Kirigami.Units.fontPixelSize + 2)
+                elide: Text.ElideRight
             }
 
-            PlasmaComponents3.Label {
-                id: balanceLabel
+            // Divider
+            Kirigami.Separator {
                 Layout.fillWidth: true
-                horizontalAlignment: Text.AlignRight
-                text: root.formatCredits(root.balance)
-                font.bold: true
-                font.pixelSize: Math.round(Kirigami.Units.fontPixelSize + 4)
-                color: {
-                    if (root.balance < 0) {
-                        return Kirigami.Theme.negativeTextColor
-                    }
-                    return Kirigami.Theme.textColor
+            }
+
+            // Total Credits
+            Row {
+                spacing: Kirigami.Units.smallSpacing
+
+                PlasmaComponents3.Label {
+                    text: "Total Credits:"
+                    opacity: 0.7
+                }
+
+                PlasmaComponents3.Label {
+                    text: root.formatCredits(root.totalCredits)
                 }
             }
-        }
 
-        // Last updated
-        PlasmaComponents3.Label {
-            Layout.fillWidth: true
-            text: "Last updated: " + root.formatTimestamp(root.lastUpdated)
-            opacity: 0.6
-            font: Kirigami.Theme.smallFont
-        }
+            // Total Usage
+            Row {
+                spacing: Kirigami.Units.smallSpacing
 
-        // Error / status message
-        PlasmaComponents3.Label {
-            Layout.fillWidth: true
-            text: root.errorMessage
-            color: Kirigami.Theme.negativeTextColor
-            visible: root.errorMessage !== ""
-            wrapMode: Text.WordWrap
-            font: Kirigami.Theme.smallFont
-        }
+                PlasmaComponents3.Label {
+                    text: "Total Usage:"
+                    opacity: 0.7
+                }
 
-        // Loading indicator
-        PlasmaComponents3.BusyIndicator {
-            Layout.alignment: Qt.AlignHCenter
-            running: root.isLoading
-            visible: root.isLoading
-        }
+                PlasmaComponents3.Label {
+                    text: root.formatCredits(root.totalUsage)
+                }
+            }
 
-        // Refresh button
-        PlasmaComponents3.Button {
-            Layout.alignment: Qt.AlignHCenter
-            text: "Refresh Now"
-            icon.name: "view-refresh"
-            onClicked: fetchCredits()
+            // Divider
+            Kirigami.Separator {
+                Layout.fillWidth: true
+            }
+
+            // Remaining Balance (prominent)
+            Row {
+                spacing: Kirigami.Units.smallSpacing
+
+                PlasmaComponents3.Label {
+                    text: "Remaining:"
+                    font.bold: true
+                }
+
+                PlasmaComponents3.Label {
+                    id: balanceLabel
+                    text: root.formatCredits(root.balance)
+                    font.bold: true
+                    font.pixelSize: Math.round(Kirigami.Units.fontPixelSize + 4)
+                    color: {
+                        if (root.balance < 0) {
+                            return Kirigami.Theme.negativeTextColor
+                        }
+                        return Kirigami.Theme.textColor
+                    }
+                }
+            }
+
+            // Last updated
+            PlasmaComponents3.Label {
+                Layout.fillWidth: true
+                text: "Last updated: " + root.formatTimestamp(root.lastUpdated)
+                opacity: 0.6
+                font: Kirigami.Theme.smallFont
+            }
+
+            // Error / status message
+            PlasmaComponents3.Label {
+                Layout.fillWidth: true
+                text: root.errorMessage
+                color: Kirigami.Theme.negativeTextColor
+                visible: root.errorMessage !== ""
+                wrapMode: Text.WordWrap
+                font: Kirigami.Theme.smallFont
+            }
+
+            // Loading indicator
+            PlasmaComponents3.BusyIndicator {
+                Layout.alignment: Qt.AlignHCenter
+                running: root.isLoading
+                visible: root.isLoading
+            }
+
+            // Refresh button
+            PlasmaComponents3.Button {
+                Layout.alignment: Qt.AlignHCenter
+                text: "Refresh Now"
+                icon.name: "view-refresh"
+                onClicked: fetchCredits()
+            }
         }
     }
 }
