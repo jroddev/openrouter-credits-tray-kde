@@ -46,7 +46,7 @@ cp -r package ~/.local/share/plasma/plasmoids/com.openrouter.credits-monitor/
 Then restart Plasma:
 
 ```bash
-killall plasmashell
+systemctl --user restart plasma-plasmashell
 ```
 
 Or log out and back in.
@@ -104,7 +104,7 @@ plasmawindowed com.openrouter.credits-monitor
 Changes to QML files require restarting the Plasma shell:
 
 ```bash
-killall plasmashell
+systemctl --user restart plasma-plasmashell
 ```
 
 Or simply log out and back in.
