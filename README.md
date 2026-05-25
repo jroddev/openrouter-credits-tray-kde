@@ -61,7 +61,26 @@ After installing, right-click your panel, choose **Add Widgets**, and search for
 
 You can get your API key from [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys).
 
-The API key is stored locally on your machine and is only sent to `openrouter.ai` to fetch your credit balance.
+### API Key Storage
+
+Your API key is stored in **plaintext** in KDE's standard Plasma config file:
+
+```
+~/.config/plasma-org.kde.plasma.desktop-appletsrc
+```
+
+This is the standard KDE Plasma configuration mechanism (KConfig XT). The same file stores settings for all Plasma widgets on your system — it's not something we invented.
+
+The key is only sent to `openrouter.ai` over HTTPS to fetch your credit balance. It is never sent anywhere else.
+
+The configuration UI masks the key with a password field by default (with a show/hide toggle), so it won't be visible on screen during normal use.
+
+If you're concerned about plaintext storage, consider:
+
+- **File-level encryption** — e.g., LUKS full-disk or home directory encryption
+- **Restricting file permissions** — `chmod 600 ~/.config/plasma-org.kde.plasma.desktop-appletsrc`
+
+If you'd like to improve how the key is stored (e.g., integrating with KWallet or a system keyring), contributions are welcome.
 
 ## Usage
 
