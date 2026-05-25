@@ -30,7 +30,7 @@ echo "Done."
 read -rp "Restart plasmashell now? [Y/n] " answer
 if [[ -z "$answer" || "$answer" =~ ^[Yy] ]]; then
     echo "Restarting plasmashell..."
-    killall plasmashell
+    systemctl --user restart plasma-plasmashell
     echo "Plasmashell restarted."
 else
     echo "Skipped restart. You may need to restart plasmashell manually for changes to take effect."
