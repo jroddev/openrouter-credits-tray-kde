@@ -185,7 +185,8 @@ PlasmoidItem {
 
     // ── Compact Representation (shown in the panel) ───────────────────
     compactRepresentation: Item {
-        width: compactLabel.implicitWidth + Kirigami.Units.gridUnit
+        // Fixed width: enough for "$999.99" (7 chars) based on font metrics
+        width: compactLabel.font.pixelSize * 4.5 + Kirigami.Units.gridUnit
         height: compactLabel.implicitHeight
 
         PlasmaComponents3.Label {
@@ -207,29 +208,13 @@ PlasmoidItem {
                 }
                 return Kirigami.Theme.textColor
             }
-            ToolTip.text: {
-                var tip = "OpenRouter Credits: " + root.formatCredits(root.balance)
-                if (root.errorMessage !== "") {
-                    tip += "\n" + root.errorMessage
-                }
-                if (root.lastUpdated !== "") {
-                    tip += "\nLast updated: " + root.formatTimestamp(root.lastUpdated)
-                }
-                return tip
-            }
-            ToolTip.delay: 500
-            ToolTip.visible: tooltipArea.containsMouse
+        }
 
-            MouseArea {
-                id: tooltipArea
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: {
-                    // Toggle expanded state to show/hide full representation
-                    root.expanded = !root.expanded
-                }
-                cursorShape: Qt.PointingHandCursor
-            }
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: root.expanded = !root.expanded
+            cursorShape: Qt.PointingHandCursor
         }
     }
 
