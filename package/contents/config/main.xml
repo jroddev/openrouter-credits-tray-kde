@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="apiKey" type="String">
+      <label>OpenRouter Management API Key</label>
+      <default></default>
+      <whatsthis>
+        Your OpenRouter management API key. Get it from
+        https://openrouter.ai/settings/keys
+      </whatsthis>
+    </entry>
+
+    <entry name="updateInterval" type="Int">
+      <label>Update Interval (seconds)</label>
+      <default>300</default>
+      <whatsthis>
+        How often (in seconds) to refresh the credit balance.
+        Minimum 30 seconds, maximum 3600 seconds (1 hour).
+      </whatsthis>
+    </entry>
+
+    <entry name="currencySymbol" type="String">
+      <label>Currency Symbol</label>
+      <default>$</default>
+      <whatsthis>
+        The symbol displayed before the credit amount.
+      </whatsthis>
+    </entry>
+
+    <entry name="decimalPlaces" type="Int">
+      <label>Decimal Places</label>
+      <default>2</default>
+      <whatsthis>
+        Number of decimal places to display for credit amounts.
+      </whatsthis>
+    </entry>
+  </group>
+</kcfg>

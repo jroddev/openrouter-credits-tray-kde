@@ -1,0 +1,15 @@
+{
+    "KPlugin": {
+        "Id": "com.openrouter.credits-monitor",
+        "Name": "OpenRouter Credits Monitor",
+        "Description": "Displays your remaining OpenRouter credit balance in the panel",
+        "Icon": "wallet-open",
+        "Authors": [{"Name": "User"}],
+        "Category": "System Information",
+        "Version": "1.0.0",
+        "Website": "",
+        "License": "MIT",
+        "EnabledByDefault": true
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}
