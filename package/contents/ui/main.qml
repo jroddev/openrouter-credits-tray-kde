@@ -169,12 +169,12 @@ PlasmoidItem {
     }
 
     // ── React to configuration changes ────────────────────────────────
-    // Plasmoid.configurationChanged fires whenever any config value changes.
-    // We check specifically for API key changes here.
+    // KConfigPropertyMap (Plasmoid.configuration) emits per-property change
+    // signals. We listen for apiKeyChanged specifically, matching the
+    // pattern used by KDE's own plasmoids (e.g. FolderView, FolderViewLayer).
     Connections {
-        target: Plasmoid
-        function onConfigurationChanged() {
-            // Detect API key changes
+        target: Plasmoid.configuration
+        function onApiKeyChanged() {
             if (root.apiKey !== root._prevApiKey) {
                 root._prevApiKey = root.apiKey
                 if (root.apiKey && root.apiKey.length > 0) {
@@ -240,7 +240,7 @@ PlasmoidItem {
             Layout.fillWidth: true
             text: "OpenRouter Credits"
             font.bold: true
-            font.pixelSize: Kirigami.Units.fontPixelSize + 2
+            font.pixelSize: Math.round(Kirigami.Units.fontPixelSize + 2)
             elide: Text.ElideRight
         }
 
@@ -304,7 +304,7 @@ PlasmoidItem {
                 horizontalAlignment: Text.AlignRight
                 text: root.formatCredits(root.balance)
                 font.bold: true
-                font.pixelSize: Kirigami.Units.fontPixelSize + 4
+                font.pixelSize: Math.round(Kirigami.Units.fontPixelSize + 4)
                 color: {
                     if (root.balance < 0) {
                         return Kirigami.Theme.negativeTextColor
