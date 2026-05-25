@@ -11,5 +11,6 @@
         "License": "MIT",
         "EnabledByDefault": true
     },
+    "KPackageStructure": "Plasma/Applet",
     "X-Plasma-API-Minimum-Version": "6.0"
 }
