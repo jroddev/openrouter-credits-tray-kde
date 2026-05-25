@@ -21,6 +21,20 @@ A KDE Plasma 6 system tray widget that displays your remaining [OpenRouter](http
 
 ## Installation
 
+### Using the install script (recommended)
+
+```bash
+./install.sh
+```
+
+To upgrade an existing installation:
+
+```bash
+./install.sh --upgrade
+```
+
+The script uses `kpackagetool6` and will prompt you to restart plasmashell afterward.
+
 ### Manual
 
 Copy the `package/` directory into your local Plasma plasmoids folder:
@@ -36,12 +50,6 @@ killall plasmashell
 ```
 
 Or log out and back in.
-
-### Using kpackagetool6
-
-```bash
-kpackagetool6 --type Plasma/Plasmoid --install package/
-```
 
 After installing, right-click your panel, choose **Add Widgets**, and search for "OpenRouter Credits Monitor".
 
@@ -86,6 +94,7 @@ Or simply log out and back in.
 
 ```
 .
+├── install.sh                     # Install/upgrade script
 ├── package/
 │   ├── metadata.json              # Plugin metadata (ID, name, version, license)
 │   └── contents/
