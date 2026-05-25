@@ -31,8 +31,14 @@ PlasmoidItem {
     id: root
 
     // Size hints for plasmawindowed (so the window doesn't collapse to 0x0)
-    Layout.minimumWidth: Kirigami.Units.gridUnit * 18
-    Layout.minimumHeight: Kirigami.Units.gridUnit * 16
+    // Only apply in Planar (windowed) mode — in panel mode these would
+    // override the compact representation's Layout hints.
+    Layout.minimumWidth: Plasmoid.formFactor === PlasmaCore.Types.Planar
+        ? Kirigami.Units.gridUnit * 18 : 0
+    Layout.minimumHeight: Plasmoid.formFactor === PlasmaCore.Types.Planar
+        ? Kirigami.Units.gridUnit * 16 : 0
+    switchWidth: Kirigami.Units.gridUnit * 10
+    switchHeight: Kirigami.Units.gridUnit * 10
 
     // ── State properties ──────────────────────────────────────────────
     property double balance: 0
@@ -185,8 +191,13 @@ PlasmoidItem {
 
     // ── Compact Representation (shown in the panel) ───────────────────
     compactRepresentation: Item {
-        width: compactLabel.implicitWidth + Kirigami.Units.gridUnit
-        height: compactLabel.implicitHeight
+        // Use Layout properties — the shell forces anchors.fill, so
+        // the `width` property is ignored. The panel containment reads
+        // Layout hints to decide how much space to allocate.
+        Layout.preferredWidth: compactLabel.implicitWidth + Kirigami.Units.smallSpacing * 2
+        Layout.minimumWidth: compactLabel.implicitWidth + Kirigami.Units.smallSpacing * 2
+        Layout.maximumWidth: compactLabel.implicitWidth + Kirigami.Units.smallSpacing * 4
+        Layout.minimumHeight: 0
 
         PlasmaComponents3.Label {
             id: compactLabel
@@ -207,29 +218,13 @@ PlasmoidItem {
                 }
                 return Kirigami.Theme.textColor
             }
-            ToolTip.text: {
-                var tip = "OpenRouter Credits: " + root.formatCredits(root.balance)
-                if (root.errorMessage !== "") {
-                    tip += "\n" + root.errorMessage
-                }
-                if (root.lastUpdated !== "") {
-                    tip += "\nLast updated: " + root.formatTimestamp(root.lastUpdated)
-                }
-                return tip
-            }
-            ToolTip.delay: 500
-            ToolTip.visible: tooltipArea.containsMouse
+        }
 
-            MouseArea {
-                id: tooltipArea
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: {
-                    // Toggle expanded state to show/hide full representation
-                    root.expanded = !root.expanded
-                }
-                cursorShape: Qt.PointingHandCursor
-            }
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: root.expanded = !root.expanded
+            cursorShape: Qt.PointingHandCursor
         }
     }
 
